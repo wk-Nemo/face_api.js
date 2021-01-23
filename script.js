@@ -8,11 +8,21 @@ Promise.all([
 ]).then(startVideo)
 
 function startVideo(){
-    navigator.getUserMedia(
-    { video: {} },
-    stream => video.srcObject = stream,
-     err => console.err(err)
-    )
+    // navigator.getUserMedia(
+    //  { video: {} },
+    //  stream => video.srcObject = stream,
+    //  err => console.err(err)
+    // )
+    var constraints = { audio: true, video: true };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(mediaStream) {
+    video.srcObject = mediaStream;
+    video.onloadedmetadata = function(e) {
+        video.play();
+    };
+})
+.catch(function(err) { console.log(err.name + ": " + err.message); });
 }
 
 // startVideo();
